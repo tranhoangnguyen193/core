@@ -204,6 +204,7 @@ public:
         notifyDialogState();
     }
 
+    using BaseInstanceClass::set_sensitive;
     virtual void set_sensitive(bool sensitive) override
     {
         BaseInstanceClass::set_sensitive(sensitive);
