@@ -166,6 +166,11 @@ weld::Builder* Application::CreateBuilder(weld::Widget* pParent, const OUString 
             bUseJSBuilder = true;
     }
 
+    if (comphelper::LibreOfficeKit::isActive() &&
+        (rUIFile == "modules/scalc/ui/pivottablelayoutdialog.ui"
+        || rUIFile == "modules/scalc/ui/selectsource.ui"))
+        bUseJSBuilder = true;
+
     if (bUseJSBuilder)
         return JSInstanceBuilder::CreateDialogBuilder(pParent, VclBuilderContainer::getUIRootDir(), rUIFile);
     else
