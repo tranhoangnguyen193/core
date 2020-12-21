@@ -1125,7 +1125,7 @@ $(eval $(call gb_Helper_register_mos,\
 	vcl \
 	wiz \
 	wpt \
-	$(if $(ENABLE_NSS),xsc) \
+	$(if $(ENABLE_NSS)$(ENABLE_OPENSSL),xsc) \
 ))
 
 # UI configuration
@@ -1172,7 +1172,7 @@ $(eval $(call gb_Helper_register_uiconfigs,\
 	uui \
 	vcl \
 	writerperfect \
-	$(if $(ENABLE_NSS),xmlsec) \
+	$(if $(ENABLE_NSS)$(ENABLE_OPENSSL),xmlsec) \
 ))
 
 ifeq ($(gb_GBUILDSELFTEST),t)
