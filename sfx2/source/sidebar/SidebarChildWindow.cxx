@@ -28,6 +28,7 @@
 namespace sfx2::sidebar {
 
 SFX_IMPL_DOCKINGWINDOW_WITHID(SidebarChildWindow, SID_SIDEBAR);
+SFX_IMPL_DOCKINGWINDOW_WITHID(LeftSidebarChildWindow, SID_LEFT_PANE_WRITER);
 
 SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId,
                                        SfxBindings* pBindings, SfxChildWinInfo* pInfo)
@@ -88,6 +89,42 @@ sal_Int32 SidebarChildWindow::GetDefaultWidth(vcl::Window const* pWindow)
     }
     else
         return 0;
+}
+
+LeftSidebarChildWindow::LeftSidebarChildWindow (
+    vcl::Window* pParentWindow,
+    sal_uInt16 nId,
+    SfxBindings* pBindings,
+    SfxChildWinInfo* pInfo)
+    : SfxChildWindow (pParentWindow, nId)
+{
+    SetWindow( VclPtr<LeftSidebarDockingWindow>::Create(
+        pBindings,
+        this,
+        pParentWindow,
+        "Banner"));
+    SetAlignment(SfxChildAlignment::LEFT);
+    SfxDockingWindow* pDockingWindow = static_cast<SfxDockingWindow*>(GetWindow());
+    pDockingWindow->EnableInput();
+    pDockingWindow->Initialize(pInfo);
+    SetHideNotDelete(true);
+    pDockingWindow->Show();
+    // ViewShellBase* pBase = ViewShellBase::GetViewShellBase(pBindings->GetDispatcher()->GetFrame());
+    // if (pBase != nullptr)
+    // {
+    //     framework::FrameworkHelper::Instance(*pBase)->UpdateConfiguration();
+    // }
+}
+
+LeftSidebarChildWindow::~LeftSidebarChildWindow()
+{
+    //ViewShellBase* pBase = nullptr;
+    LeftSidebarDockingWindow* pDockingWindow = dynamic_cast<LeftSidebarDockingWindow*>(GetWindow());
+    //if (pDockingWindow != nullptr)
+    //    pBase = ViewShellBase::GetViewShellBase(
+    //        pDockingWindow->GetBindings().GetDispatcher()->GetFrame());
+    //if (pBase != nullptr)
+        //framework::FrameworkHelper::Instance(*pBase)->UpdateConfiguration();
 }
 
 } // end of namespace sfx2::sidebar

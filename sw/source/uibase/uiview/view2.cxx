@@ -1172,7 +1172,6 @@ void SwView::Execute(SfxRequest &rReq)
         case SID_GALLERY :
             // First make sure that the sidebar is visible
             GetViewFrame()->ShowChildWindow(SID_SIDEBAR);
-
             ::sfx2::sidebar::Sidebar::ShowPanel(
                 u"GalleryPanel",
                 GetViewFrame()->GetFrame().GetFrameInterface());
@@ -1341,7 +1340,6 @@ void SwView::Execute(SfxRequest &rReq)
             rReq.SetReturnValue(SfxBoolItem(nSlot, InsertGraphicDlg( rReq )));
         }
         break;
-
         default:
             OSL_ENSURE(false, "wrong dispatcher");
             return;

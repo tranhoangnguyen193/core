@@ -2594,6 +2594,24 @@ SfxBoolItem Sidebar SID_SIDEBAR
     GroupId = SfxGroupId::View;
 ]
 
+SfxBoolItem Leftsidebar SID_LEFT_PANE_WRITER
+[
+    AutoUpdate = TRUE,
+    FastCall = FALSE,
+    ReadOnlyDoc = TRUE,
+    Toggle = FALSE,
+    Container = FALSE,
+    RecordAbsolute = FALSE,
+    RecordPerSet;
+    Asynchron;
+
+
+    AccelConfig = TRUE,
+    MenuConfig = TRUE,
+    ToolBoxConfig = TRUE,
+    GroupId = SfxGroupId::View;
+]
+
 SfxBoolItem Menubar SID_MENUBAR
 [
     AutoUpdate = TRUE,
@@ -5620,22 +5638,6 @@ SfxVoidItem SafeMode SID_SAFE_MODE
 
     AccelConfig = TRUE,
     MenuConfig = TRUE,
-    ToolBoxConfig = TRUE,
-    GroupId = SfxGroupId::Application;
-]
-
-SfxBoolItem DevelopmentToolsDockingWindow SID_DEVELOPMENT_TOOLS_DOCKING_WINDOW
-[
-    AutoUpdate = TRUE,
-    FastCall = FALSE,
-    ReadOnlyDoc = TRUE,
-    Toggle = TRUE,
-    Container = FALSE,
-    RecordAbsolute = FALSE,
-    RecordPerSet;
-
-    AccelConfig = FALSE,
-    MenuConfig = FALSE,
     ToolBoxConfig = TRUE,
     GroupId = SfxGroupId::Application;
 ]

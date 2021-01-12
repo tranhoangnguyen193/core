@@ -89,7 +89,6 @@
 #include <modcfg.hxx>
 #include <fontcfg.hxx>
 #include <sfx2/sidebar/SidebarChildWindow.hxx>
-#include <svx/devtools/DevelopmentToolDockingWindow.hxx>
 #include <swatrset.hxx>
 #include <idxmrk.hxx>
 #include <wordcountdialog.hxx>
@@ -306,7 +305,6 @@ void SwDLL::RegisterControls()
     SwSpellDialogChildWindow::RegisterChildWindow(
         false, pMod, comphelper::LibreOfficeKit::isActive() ? SfxChildWindowFlags::NEVERCLONE
                                                             : SfxChildWindowFlags::NONE);
-    DevelopmentToolChildWindow::RegisterChildWindow(false, pMod);
 
     SvxGrafRedToolBoxControl::RegisterControl( SID_ATTR_GRAF_RED, pMod );
     SvxGrafGreenToolBoxControl::RegisterControl( SID_ATTR_GRAF_GREEN, pMod );
@@ -323,6 +321,7 @@ void SwDLL::RegisterControls()
 #endif
 
     ::sfx2::sidebar::SidebarChildWindow::RegisterChildWindow(false, pMod);
+    ::sfx2::sidebar::LeftSidebarChildWindow::RegisterChildWindow(true, pMod);
 
     SwJumpToSpecificPageControl::RegisterControl(SID_JUMP_TO_SPECIFIC_PAGE, pMod);
 }

@@ -40,6 +40,18 @@ public:
     static sal_Int32 GetDefaultWidth(vcl::Window const * pWindow);
 };
 
+class SFX2_DLLPUBLIC LeftSidebarChildWindow final : public SfxChildWindow
+{
+public:
+    LeftSidebarChildWindow (
+        vcl::Window* pParentWindow,
+        sal_uInt16 nId,
+        SfxBindings* pBindings,
+        SfxChildWinInfo* pInfo);
+    virtual ~LeftSidebarChildWindow() override;
+
+    SFX_DECL_CHILDWINDOW_WITHID(LeftSidebarChildWindow);
+};
 
 } // end of namespace sfx2::sidebar
 

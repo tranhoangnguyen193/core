@@ -75,6 +75,8 @@ void DrawViewShell::InitInterface_Impl()
 #endif
     GetStaticInterface()->RegisterChildWindow(
         ::sfx2::sidebar::SidebarChildWindow::GetChildWindowId());
+    GetStaticInterface()->RegisterChildWindow(
+        ::sfx2::sidebar::LeftSidebarChildWindow::GetChildWindowId());
 }
 
 // SdGraphicViewShell
@@ -100,6 +102,8 @@ void GraphicViewShell::InitInterface_Impl()
 #endif
     GetStaticInterface()->RegisterChildWindow(
         ::sfx2::sidebar::SidebarChildWindow::GetChildWindowId());
+    GetStaticInterface()->RegisterChildWindow(
+        ::sfx2::sidebar::LeftSidebarChildWindow::GetChildWindowId());
 }
 
 } // end of namespace sd

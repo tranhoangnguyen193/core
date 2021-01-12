@@ -161,6 +161,7 @@ void ScDLL::Init()
 
     // Common SFX Controller
     ::sfx2::sidebar::SidebarChildWindow::RegisterChildWindow(false, pMod);
+    ::sfx2::sidebar::LeftSidebarChildWindow::RegisterChildWindow(true, pMod);
 
     // SvxStatusBar Controller
     SvxInsertStatusBarControl       ::RegisterControl(SID_ATTR_INSERT,      pMod);

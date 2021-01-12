@@ -87,7 +87,7 @@
 #define BMP_128X128_WRITER_DOC              "sfx2/res/128x128_writer_doc-p.png"
 
 #define SFX_BMP_CLOSE_DOC                   "sfx2/res/closedoc.png"
-
+#define SFX_BMP_PETER_BANNER                   "sfx2/res/banner.png"
 
 #endif
 

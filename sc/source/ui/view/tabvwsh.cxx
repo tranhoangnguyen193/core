@@ -55,6 +55,7 @@ void ScTabViewShell::InitInterface_Impl()
     GetStaticInterface()->RegisterChildWindow(SID_NAVIGATOR, true);
 
     GetStaticInterface()->RegisterChildWindow(::sfx2::sidebar::SidebarChildWindow::GetChildWindowId());
+    GetStaticInterface()->RegisterChildWindow(::sfx2::sidebar::LeftSidebarChildWindow::GetChildWindowId());
     GetStaticInterface()->RegisterChildWindow(ScNameDlgWrapper::GetChildWindowId());
     GetStaticInterface()->RegisterChildWindow(ScNameDefDlgWrapper::GetChildWindowId());
     GetStaticInterface()->RegisterChildWindow(ScSolverDlgWrapper::GetChildWindowId());

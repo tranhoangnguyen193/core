@@ -163,8 +163,10 @@ void SdDLL::RegisterControllers(SdModule* pMod)
 #if HAVE_FEATURE_AVMEDIA
     ::avmedia::MediaPlayer::RegisterChildWindow(false, pMod);
 #endif
+
     ::sd::LeftPaneImpressChildWindow::RegisterChildWindow(false, pMod);
     ::sd::LeftPaneDrawChildWindow::RegisterChildWindow(false, pMod);
+    ::sfx2::sidebar::LeftSidebarChildWindow::RegisterChildWindow(false, pMod);
     ::sfx2::sidebar::SidebarChildWindow::RegisterChildWindow(false, pMod);
 
     SvxFillToolBoxControl::RegisterControl(0, pMod);

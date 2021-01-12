@@ -43,6 +43,11 @@ interface Window
         ExecMethod = ChildWindowExecute ;
         StateMethod = ChildWindowState ;
     ]
+    SID_LEFT_PANE_WRITER // status(final|play)
+    [
+        ExecMethod = ChildWindowExecute ;
+        StateMethod = ChildWindowState ;
+    ]
     SID_BROWSER // ole(no) api()
     [
         ExecMethod = ChildWindowExecute ;

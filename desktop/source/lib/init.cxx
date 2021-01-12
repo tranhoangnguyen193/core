@@ -876,6 +876,11 @@ void setupSidebar(std::u16string_view sidebarDeckId = u"")
 
         pViewFrame->ShowChildWindow(SID_SIDEBAR, true);
 
+        if (!pViewFrame->GetChildWindow(SID_LEFT_PANE_WRITER))
+            pViewFrame->SetChildWindow(SID_LEFT_PANE_WRITER, false /* create it */, true /* focus */);
+
+        pViewFrame->ShowChildWindow(SID_LEFT_PANE_WRITER, true);
+
         // Force synchronous population of panels
         SfxChildWindow *pChild = pViewFrame->GetChildWindow(SID_SIDEBAR);
         if (!pChild)
@@ -946,12 +951,12 @@ VclPtr<Window> getSidebarWindow()
 
 // Could be anonymous in principle, but for the unit testing purposes, we
 // declare it in init.hxx.
-OUString desktop::extractParameter(OUString& rOptions, std::u16string_view rName)
+OUString desktop::extractParameter(OUString& rOptions, const OUString& rName)
 {
     OUString aValue;
 
-    OUString aNameEquals(OUString::Concat(rName) + "=");
-    OUString aCommaNameEquals(OUString::Concat(",") + rName + "=");
+    OUString aNameEquals(rName + "=");
+    OUString aCommaNameEquals("," + rName + "=");
 
     int nIndex = -1;
     if (rOptions.startsWith(aNameEquals))
@@ -2068,10 +2073,6 @@ static void lo_runLoop(LibreOfficeKit* pThis,
                        LibreOfficeKitWakeCallback pWakeCallback,
                        void* pData);
 
-static void lo_sendDialogEvent(LibreOfficeKit* pThis,
-                               unsigned long long int nLOKWindowId,
-                               const char* pArguments);
-
 LibLibreOffice_Impl::LibLibreOffice_Impl()
     : m_pOfficeClass( gOfficeClass.lock() )
     , maThread(nullptr)
@@ -2096,7 +2097,6 @@ LibLibreOffice_Impl::LibLibreOffice_Impl()
         m_pOfficeClass->runMacro = lo_runMacro;
         m_pOfficeClass->signDocument = lo_signDocument;
         m_pOfficeClass->runLoop = lo_runLoop;
-        m_pOfficeClass->sendDialogEvent = lo_sendDialogEvent;
 
         gOfficeClass = m_pOfficeClass;
     }
@@ -2217,7 +2217,7 @@ static LibreOfficeKitDocument* lo_documentLoadWithOptions(LibreOfficeKit* pThis,
         // 'Language=...' is an option that LOK consumes by itself, and does
         // not pass it as a parameter to the filter
         OUString aOptions = getUString(pOptions);
-        const OUString aLanguage = extractParameter(aOptions, u"Language");
+        const OUString aLanguage = extractParameter(aOptions, "Language");
         bool isValidLangTag = LanguageTag::isValidBcp47(aLanguage, nullptr);
 
         if (!aLanguage.isEmpty() && isValidLangTag)
@@ -2235,7 +2235,7 @@ static LibreOfficeKitDocument* lo_documentLoadWithOptions(LibreOfficeKit* pThis,
             SvNumberFormatter::resetTheCurrencyTable();
         }
 
-        const OUString aDeviceFormFactor = extractParameter(aOptions, u"DeviceFormFactor");
+        const OUString aDeviceFormFactor = extractParameter(aOptions, "DeviceFormFactor");
         SfxLokHelper::setDeviceFormFactor(aDeviceFormFactor);
 
         uno::Sequence<css::beans::PropertyValue> aFilterOptions(3);
@@ -2464,14 +2464,11 @@ static void lo_registerCallback (LibreOfficeKit* pThis,
 {
     SolarMutexGuard aGuard;
 
-    Application* pApp = GetpApp();
-    assert(pApp);
-
     LibLibreOffice_Impl* pLib = static_cast<LibLibreOffice_Impl*>(pThis);
     pLib->maLastExceptionMsg.clear();
 
-    pApp->m_pCallback = pLib->mpCallback = pCallback;
-    pApp->m_pCallbackData = pLib->mpCallbackData = pData;
+    pLib->mpCallback = pCallback;
+    pLib->mpCallbackData = pData;
 }
 
 static int doc_saveAs(LibreOfficeKitDocument* pThis, const char* sUrl, const char* pFormat, const char* pFilterOptions)
@@ -3700,8 +3697,7 @@ public:
 
 } // anonymous namespace
 
-
-static void lcl_sendDialogEvent(unsigned long long int nWindowId, const char* pArguments)
+static void doc_sendDialogEvent(LibreOfficeKitDocument* /*pThis*/, unsigned long long int nWindowId, const char* pArguments)
 {
     SolarMutexGuard aGuard;
 
@@ -3782,17 +3778,6 @@ static void lcl_sendDialogEvent(unsigned long long int nWindowId, const char* pA
     // force resend
     if (!bIsWeldedDialog)
         pWindow->Resize();
-}
-
-
-static void doc_sendDialogEvent(LibreOfficeKitDocument* /*pThis*/, unsigned long long int nWindowId, const char* pArguments)
-{
-    lcl_sendDialogEvent(nWindowId, pArguments);
-}
-
-static void lo_sendDialogEvent(LibreOfficeKit* /*pThis*/, unsigned long long int nWindowId, const char* pArguments)
-{
-    lcl_sendDialogEvent(nWindowId, pArguments);
 }
 
 static void doc_postUnoCommand(LibreOfficeKitDocument* pThis, const char* pCommand, const char* pArguments, bool bNotifyWhenFinished)
@@ -5148,7 +5133,7 @@ static int doc_createViewWithOptions(LibreOfficeKitDocument* pThis,
     SetLastExceptionMsg();
 
     OUString aOptions = getUString(pOptions);
-    const OUString aLanguage = extractParameter(aOptions, u"Language");
+    const OUString aLanguage = extractParameter(aOptions, "Language");
 
     if (!aLanguage.isEmpty())
     {
@@ -5157,7 +5142,7 @@ static int doc_createViewWithOptions(LibreOfficeKitDocument* pThis,
         comphelper::LibreOfficeKit::setLocale(LanguageTag(aLanguage));
     }
 
-    const OUString aDeviceFormFactor = extractParameter(aOptions, u"DeviceFormFactor");
+    const OUString aDeviceFormFactor = extractParameter(aOptions, "DeviceFormFactor");
     SfxLokHelper::setDeviceFormFactor(aDeviceFormFactor);
 
     LibLODocument_Impl* pDocument = static_cast<LibLODocument_Impl*>(pThis);
@@ -6048,9 +6033,9 @@ public:
     }
 };
 
-static void activateNotebookbar(std::u16string_view rApp)
+static void activateNotebookbar(const OUString& rApp)
 {
-    OUString aPath = OUString::Concat("org.openoffice.Office.UI.ToolbarMode/Applications/") + rApp;
+    OUString aPath = "org.openoffice.Office.UI.ToolbarMode/Applications/" + rApp;
 
     const utl::OConfigurationTreeRoot aAppNode(xContext, aPath, true);
 
@@ -6374,9 +6359,9 @@ static int lo_initialize(LibreOfficeKit* pThis, const char* pAppPath, const char
 
     if (bNotebookbar)
     {
-        activateNotebookbar(u"Writer");
-        activateNotebookbar(u"Calc");
-        activateNotebookbar(u"Impress");
+        activateNotebookbar("Writer");
+        activateNotebookbar("Calc");
+        activateNotebookbar("Impress");
     }
 
     return bInitialized;

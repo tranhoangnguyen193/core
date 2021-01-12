@@ -8,13 +8,13 @@ Globals
             UREPACKAGEVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@.@LIBO_VERSION_MICRO@.@LIBO_VERSION_PATCH@@LIBO_VERSION_SUFFIX@
             URELAYERVERSION 1
             REFERENCEOOOMAJORMINOR 4.1
-            WINDOWSBASISROOTNAME LibreOffice
-            UNIXBASISROOTNAME libreoffice@LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
+            WINDOWSBASISROOTNAME ElenphantOffice
+            UNIXBASISROOTNAME elephantoffice@LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
             HIDELICENSEDIALOG 1
             PACKAGEPREFIX
             BASISPACKAGEPREFIX libobasis
-            UREPACKAGEPREFIX libreoffice
-            SOLSUREPACKAGEPREFIX libreoffice
+            UREPACKAGEPREFIX elephantoffice
+            SOLSUREPACKAGEPREFIX elephantoffice
             PROGRESSBARCOLOR 0,0,0
             PROGRESSFRAMECOLOR 102,102,102
             PROGRESSPOSITION 30,145
@@ -39,7 +39,7 @@ Globals
     }
 }
 
-LibreOffice
+ElephantOffice
 {
     Settings
     {
@@ -133,14 +133,14 @@ LibreOfficeDev
     }
 }
 
-LibreOffice_SDK
+ElephantOffice_SDK 
 {
     Settings
     {
         downloadname LibreOffice-SDK_{packageversion}_{os}_install_{languages}
         variables
         {
-            PRODUCTNAME LibreOffice
+            PRODUCTNAME ElephantOffice
             PRODUCTVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
             PRODUCTEXTENSION .@LIBO_VERSION_MICRO@.@LIBO_VERSION_PATCH@@LIBO_VERSION_SUFFIX@
             POSTVERSIONEXTENSION SDK
